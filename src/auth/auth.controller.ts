@@ -14,7 +14,7 @@ import {
 import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { AuthForgetDTO } from './dto/auth-forget.dto';
-// import { AuthResetDTO } from './dto/auth-reset.dto';
+import { AuthResetDTO } from './dto/auth-reset.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -50,10 +50,10 @@ export class AuthController {
     return this.authService.forget(email);
   }
 
-  // @Post('reset')
-  // async reset(@Body() { password, token }: AuthResetDTO) {
-  //   return this.authService.reset(password, token);
-  // }
+  @Post('reset')
+  async reset(@Body() { password, token }: AuthResetDTO) {
+    return this.authService.reset(password, token);
+  }
   @UseGuards(AuthGuard)
   @Post('me')
   async me(@User() user) {
