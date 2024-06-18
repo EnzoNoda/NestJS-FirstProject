@@ -14,18 +14,16 @@ import { UpdateUserDTO } from './dto/update-put-user.dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
 
 import { UserService } from './user.service';
-import { ParamId } from 'src/decorators/param-id.dacorator';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/enums/role.enum';
-import { RoleGuard } from 'src/guards/role.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { ThrottlerGuard } from '@nestjs/throttler';
-// import { LogInterceptor } from 'src/interceptors/log.interceptors';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
+import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
+import { ParamId } from '../decorators/param-id.dacorator';
 
 // @UseInterceptors(LogInterceptor)
 
 @Roles(Role.Admin)
-@UseGuards(ThrottlerGuard, AuthGuard, RoleGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -57,6 +55,8 @@ export class UserController {
 
   @Delete(':id')
   async delete(@ParamId() id: number) {
-    return this.userService.delete(id);
+    return {
+      success: await this.userService.delete(id),
+    };
   }
 }
